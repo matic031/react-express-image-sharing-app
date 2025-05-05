@@ -16,6 +16,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/userRoutes');
 var photosRouter = require('./routes/photoRoutes');
+var commentsRouter = require('./routes/commentRoutes');
 
 var app = express();
 
@@ -23,10 +24,10 @@ var cors = require('cors');
 var allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
 app.use(cors({
   credentials: true,
-  origin: function(origin, callback){
+  origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, curl)
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin)===-1){
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
       var msg = "The CORS policy does not allow access from the specified Origin.";
       return callback(new Error(msg), false);
     }
@@ -55,7 +56,7 @@ app.use(session({
   secret: 'work hard',
   resave: true,
   saveUninitialized: false,
-  store: MongoStore.create({mongoUrl: mongoDB})
+  store: MongoStore.create({ mongoUrl: mongoDB })
 }));
 //Shranimo sejne spremenljivke v locals
 //Tako lahko do njih dostopamo v vseh view-ih (glej layout.hbs)
@@ -67,14 +68,15 @@ app.use(function (req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/photos', photosRouter);
+app.use('/comments', commentsRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
