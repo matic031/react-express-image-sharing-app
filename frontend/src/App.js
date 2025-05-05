@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserContext } from "./userContext";
 import Header from "./components/Header";
 import Photos from "./components/Photos";
+import PhotoDetail from "./components/PhotoDetail";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
@@ -48,6 +49,7 @@ function App() {
           <Header title="My application"></Header>
           <Routes>
             <Route path="/" exact element={<Photos />}></Route>
+            <Route path="/photo/:id" element={<PhotoDetail />}></Route>
             <Route path="/login" exact element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/publish" element={<AddPhoto />}></Route>
